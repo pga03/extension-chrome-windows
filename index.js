@@ -88,7 +88,7 @@ chrome.runtime.onMessageExternal.addListener(
       "received": request
     }
     document.getElementById('message').innerHTML ="<h3>" + request.message + "</h3>";
-    sendResponse("I got your message dude!");
+    sendResponse("I got your message!");
 
     //Pass the non-native message to the native host
     passMessageToNative(request.message);
