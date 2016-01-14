@@ -1,0 +1,20 @@
+{
+  "manifest_version": 2,
+  "name": "com.ibm.firstdiscovery",
+  "description": "JOHN'S extension that facilitates communication between FDS and FDT",
+  "version": "1.0",
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "index.html"
+  },
+  "permissions": [
+    "activeTab",
+    "nativeMessaging"
+  ],
+  "externally_connectable":{
+    "matches": ["http://extension-demo-jtworkme.mybluemix.net/*"]
+  },
+  "background": {
+    "scripts": ["background.js"]
+  }
+}
