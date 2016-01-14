@@ -19,8 +19,9 @@ The installation for the extension is very straightforward. Simply turn on
 developer tools in chrome://extensions and load the unpacked app.
 
 The host, on the other hand, is a different story.
+
 **HEADS UP:**
-* There are hardcoded paths in
+**There are hardcoded paths in**
     * com.ibm.firstdiscovery.json
     * install-host.bat
 
