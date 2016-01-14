@@ -21,9 +21,10 @@ developer tools in chrome://extensions and load the unpacked app.
 The host, on the other hand, is a different story.
 
 **HEADS UP:**
+
 **There are hardcoded paths in**
-    * com.ibm.firstdiscovery.json
-    * install-host.bat
+* com.ibm.firstdiscovery.json
+* install-host.bat
 
 If your username is IBM_ADMIN, you have a folder C:\Users\IBM_ADMIN\projects and the project is installed in C:\Users\IBM_ADMIN\projects\extenstion-chrome-windows you should be fine. Otherwise, change the paths accordingly
 
