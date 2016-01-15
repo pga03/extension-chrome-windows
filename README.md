@@ -14,7 +14,7 @@ directions.
 The installation for the extension is very straightforward. Simply turn on
 developer tools in chrome://extensions and load the unpacked app.
 
-*You also need to clone the first-discovery-native-host repo to C:\Users\IBM_ADMIN\projects\first-discovery-native-host*
+**You also need to clone the first-discovery-native-host repo to C:\Users\IBM_ADMIN\projects\first-discovery-native-host**
 
 ###Additional Notes:
 * A webpage can't listen for messages, but it can be sent responses. This is good enough for our use case.
