@@ -16,6 +16,11 @@ developer tools in chrome://extensions and load the unpacked app.
 
 **You also need to clone the first-discovery-native-host repo to C:\Users\IBM_ADMIN\projects\first-discovery-native-host**
 
+###Usage
+Go to chrome-extension://fojfkfdnipccdhhjakieojkglomfaloe/index.html and http://extension-demo-jtworkme.mybluemix.net/
+
+Once on the pages, you can try sending messages.
+
 ###Additional Notes:
 * A webpage can't listen for messages, but it can be sent responses. This is good enough for our use case.
 * Windows/OS X/Linux have different installation methods

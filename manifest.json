@@ -19,7 +19,7 @@
   "externally_connectable":{
     "matches": ["http://extension-demo-jtworkme.mybluemix.net/*"]
   },
-  "background": {
+  "_background": {
     "scripts": ["background.js"]
   }
 }
