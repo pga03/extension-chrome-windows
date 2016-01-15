@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "com.ibm.firstdiscovery",
-  "description": "JOHN'S extension that facilitates communication between FDS and FDT",
+  "description": "Extension that facilitates communication between First Discovery Tool and Native host",
   "version": "1.0",
   "browser_action": {
     "default_icon": "icon128.png",

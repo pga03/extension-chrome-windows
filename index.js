@@ -49,7 +49,7 @@ function onDisconnected() {
 
 function connect() {
   var hostName = "com.ibm.firstdiscovery";
-  appendMessage("Connecting to native messaging host <b>" + hostName + "</b>")
+  appendMessage("Connecting to native messaging host <b>" + hostName + "</b>");
   port = chrome.runtime.connectNative(hostName);
   port.onMessage.addListener(onNativeMessage);
   port.onDisconnect.addListener(onDisconnected);
