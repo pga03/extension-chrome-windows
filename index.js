@@ -11,7 +11,8 @@ var getKeys = function(obj){
 }
 
 function appendMessage(text) {
-  document.getElementById('response').innerHTML += "<p>" + text + "</p>";
+  //document.getElementById('response').innerHTML += "<p>" + text + "</p>";
+  console.log(text);
 }
 
 function updateUiState() {
@@ -49,7 +50,7 @@ function onDisconnected() {
 
 function connect() {
   var hostName = "com.ibm.firstdiscovery";
-  appendMessage("Connecting to native messaging host <b>" + hostName + "</b>");
+  appendMessage("Connecting to native messaging host <b>" + hostName + "</b>")
   port = chrome.runtime.connectNative(hostName);
   port.onMessage.addListener(onNativeMessage);
   port.onDisconnect.addListener(onDisconnected);
@@ -57,10 +58,7 @@ function connect() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  document.getElementById('connect-button').addEventListener(
-      'click', connect);
-  document.getElementById('send-message-button').addEventListener(
-      'click', sendNativeMessage);
+  connect();
   updateUiState();
 });
 
