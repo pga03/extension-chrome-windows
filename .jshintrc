@@ -26,7 +26,7 @@
     "globalstrict"  : false,
 
 
-    "asi"           : true,
+    "asi"           : false,
     "laxbreak"      : true,
     "bitwise"       : true,
     "boss"          : false,
