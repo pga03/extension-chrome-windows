@@ -1,6 +1,6 @@
 {
     "passfail"      : false,
-    "maxerr"        : 100,
+    "maxerr"        : 10,
 
 
     "browser"       : true,
