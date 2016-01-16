@@ -6,8 +6,8 @@ https://developer.chrome.com/extensions/messaging
 https://developer.chrome.com/extensions/nativeMessaging
 
 ###What does it do?
-It is a skeleton that passes messages being passed between a simple Bluemix-
-hosted webpage (not included in this repo), a Chrome extension and a locally
+It is a skeleton that passes messages being passed between a simple
+webpage (not included in this repo), a Chrome extension and a locally
 running host (in a separate repo).
 
 The message originating in the web app gets passed to the extension. The
