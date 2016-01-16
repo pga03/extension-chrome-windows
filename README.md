@@ -6,9 +6,7 @@ https://developer.chrome.com/extensions/messaging
 https://developer.chrome.com/extensions/nativeMessaging
 
 ###What does it do?
-It is a skeleton that passes messages being passed between a simple
-webpage (not included in this repo), a Chrome extension and a locally
-running host (in a separate repo).
+It takes a message from a web page and sends it to a native host.
 
 The message originating in the web app gets passed to the extension. The
 extension then passes that message as a native message to the native host. The
@@ -22,8 +20,8 @@ developer tools in chrome://extensions and load the unpacked app.
 **You also need to install the native host. See https://github.com/pga03/first-discovery-native-host**
 
 ###Usage
-Go to chrome-extension://fojfkfdnipccdhhjakieojkglomfaloe/index.html and http://extension-demo-jtworkme.mybluemix.net/
-
+Click the newly-created Fist Discovery icon in Chrome. This will open a new tab
+on the messaging site.
 Once on the pages, you can try sending messages.
 
 ###Additional Notes:

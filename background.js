@@ -1,21 +1,24 @@
-var port, message= null;
-///////////////////////////////////////////////////////////////////////////////
-//                         Native Messaging Functions                        //
-///////////////////////////////////////////////////////////////////////////////
+/******************************************************************************
+*                               Native Messaging                              *
+******************************************************************************/
 
-function sendNativeMessage() {
-  message = {"text": document.getElementById('input-text').value};
-  port.postMessage(message);
-  console.log("Sent message: " + JSON.stringify(message));
+var port, message = null;
+
+function connectToNativeHost() {
+  var hostName = "com.ibm.firstdiscovery";
+  console.log("Connecting to native messaging host: " + hostName);
+  console.log("PORT: "+port);
+  port = chrome.runtime.connectNative(hostName);
+  port.onMessage.addListener(onNativeMessage);
+  port.onDisconnect.addListener(onDisconnected);
 }
-
-function passMessageToNative(message) {
+function sendNativeMessage(message) {
   port.postMessage(message);
-  console.log("Sent message: "+ JSON.stringify(message));
+  console.log("Sending to native host: "+ JSON.stringify(message));
 }
 
 function onNativeMessage(message) {
-  console.log("Received message: <b>" + JSON.stringify(message)); 
+  console.log("Message from native host: " + JSON.stringify(message));
 }
 
 function onDisconnected() {
@@ -23,48 +26,45 @@ function onDisconnected() {
   port = null;
 }
 
-//Connects to the native messaging host
-function connect() {
-  var hostName = "com.ibm.firstdiscovery";
-  console.log("Connecting to native messaging host " + hostName);
-  port = chrome.runtime.connectNative(hostName);
-  port.onMessage.addListener(onNativeMessage);
-  port.onDisconnect.addListener(onDisconnected);
-}
 
 //Add the listener to the background page
 document.addEventListener('DOMContentLoaded', function () {
-  connect();
+  connectToNativeHost();
 });
 
-///////////////////////////////////////////////////////////////////////////////
-//                Non-Native Messaging Functions                             //
-///////////////////////////////////////////////////////////////////////////////
+/******************************************************************************
+*                            Non-Native Messaging                             *
+******************************************************************************/
 
 // Listen to events from our web app and handle them.
 chrome.runtime.onMessageExternal.addListener(
   function (request, sender, sendResponse) {
     // log the parameters to console for debug
-    console.log('a message was received');
-    console.log('request:');
+    console.log("a message was received");
+    console.log("request:");
     console.dir(request);
-    console.log('sender:');
+    console.log("sender:");
     console.dir(sender);
-    console.log('sendResponse:');
+    console.log("sendResponse:");
     console.dir(sendResponse);
 
-    if(request.message === undefined){
-      console.log('undefined message recieved. Its Probably no big deal though');
+    // stop everything when a null message is received
+    if(typeof request.message === undefined){
+      console.log("undefined message recieved.");
+      return;
     }
     // wrap the message in an object and send it back to the caller
+    //TODO Why is this here? Thre request is already an object, hince why
+    // we call requst.* for getting parts of the request
     var msgResponse = {
       "received": request
     };
-    document.getElementById('message').innerHTML ="<h3>" + request.message + "</h3>";
-    sendResponse("I got your message!");
+
+    console.log("Message to extension: " + request.message);
+    sendResponse("RESPONSE: Extension got this message:" + request.message);
 
     //Pass the non-native message to the native host
-    passMessageToNative(request.message);
+    sendNativeMessage(request.message);
 
     sendResponse(msgResponse);
 });

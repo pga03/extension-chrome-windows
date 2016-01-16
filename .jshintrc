@@ -7,7 +7,7 @@
     "node"          : false,
     "rhino"         : false,
     "couch"         : false,
-    "wsh"           : true,
+    "wsh"           : false,
     "jquery"        : false,
     "prototypejs"   : false,
     "mootools"      : false,
