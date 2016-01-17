@@ -19,9 +19,10 @@ developer tools in chrome://extensions and load the unpacked app.
 
 **You also need to install the native host. See https://github.com/pga03/first-discovery-native-host**
 
-###Usage
+###Usage:
 Click the newly-created Fist Discovery icon in Chrome. This will open a new tab
 on the messaging site.
+
 Once on the pages, you can try sending messages.
 
 ###Additional Notes:
