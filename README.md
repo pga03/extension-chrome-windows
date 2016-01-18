@@ -13,6 +13,9 @@ extension then passes that message as a native message to the native host. The
 native host and extension can pass messages between themselves in both
 directions.
 
+The popup.html and popup.js files do a preliminary check to see if the native
+host is connectable. If it isn't, it redirects Chrome to the error.html page
+
 ###How do I install it?
 The installation for the extension is fairly straightforward. Simply turn on
 developer tools in chrome://extensions and load the unpacked app.

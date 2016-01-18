@@ -1,8 +1,9 @@
 /******************************************************************************
-*                               Native Messaging                              *
-******************************************************************************/
+ *                               Native Messaging                              *
+ ******************************************************************************/
 
 var port, message = null;
+var response;
 
 function connectToNativeHost() {
   var hostName = "com.ibm.firstdiscovery";
@@ -11,6 +12,7 @@ function connectToNativeHost() {
   port.onMessage.addListener(onNativeMessage);
   port.onDisconnect.addListener(onDisconnected);
 }
+
 function sendNativeMessage(message) {
   port.postMessage(message);
   console.log("Sending to native host: "+ JSON.stringify(message));
@@ -18,6 +20,17 @@ function sendNativeMessage(message) {
 
 function onNativeMessage(message) {
   console.log("Message from native host: " + JSON.stringify(message));
+  if (message.is_successful === "true"){
+    console.log("Successful message!");
+  }
+  else {
+    console.log("Unsuccessful message! :(");
+  }
+  //The page needs refreshed to see the response
+  chrome.runtime.onMessageExternal.addListener(
+    function (request, sender, sendResponse) {
+      sendResponse(message);
+    });
 }
 
 function onDisconnected() {
@@ -31,30 +44,30 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 /******************************************************************************
-*                            Non-Native Messaging                             *
-******************************************************************************/
+ *                            Non-Native Messaging                             *
+ ******************************************************************************/
 
 // Listen to events from our web app and handle them.
-chrome.runtime.onMessageExternal.addListener(
-  function (request, sender, sendResponse) {
+chrome.runtime.onMessageExternal.addListener(webListener);
 
-    //Parse message string into JSON object
+function webListener(request, sender, sendResponse) {
+  //Parse message string into JSON object
+
+  if (request.message){
     var message = JSON.parse(request.message);
-
-    // Do nothing when undef message recieved
-    if(typeof message=== undefined){
-      console.log("undefined message recieved.");
-      return;
-    }
 
     console.log("Stringified Message: " + JSON.stringify(message));
 
     //Pass the non-native message to the native host
-    sendNativeMessage(message);
+    var response = sendNativeMessage(message);
 
     var msgResponse = {
       "received": request
     };
+    console.log("Request: " + JSON.stringify(msgResponse));
 
-    sendResponse(msgResponse);
-});
+  } else{
+    console.log("undefined request.message recieved");
+  }
+
+}

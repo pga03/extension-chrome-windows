@@ -18,7 +18,8 @@
     "nativeMessaging"
   ],
   "externally_connectable":{
-    "matches": ["http://extension-demo-jtworkme.mybluemix.net/*"]
+    "matches": ["http://extension-demo-jtworkme.mybluemix.net/*",
+                "https://first-discovery-demo.mybluemix.net/demos/prefsServerIntegration/*"]
   },
   "background": {
     "page": "background.html"
