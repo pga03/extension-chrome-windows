@@ -1,11 +1,9 @@
 /*It would be nice to inline this in popup.html but Chrome's security
   policy prohibits inline scripts in extensions*/
 
-//TODO: This is somewhat kludgy. We shouldn't assume isConnectable is true,
-//      which is far too optimistic. We should assume isConnectable is false
-//      and then prove otherwise.
+//TODO: fix connection checking for popup.js
 
-var isConnectable = true;
+var isConnectable = false;
 
 var hostName, port = null;
 hostName = "com.ibm.firstdiscovery";
@@ -21,6 +19,6 @@ function onDisconnected() {
 }
 
 //After a check for the native host, we go to the demo site
-if (!(isConnectable === false || isConnectable === undefined || isConnectable === null)){
+if (isConnectable === true){
   chrome.tabs.create({url : "http://extension-demo-jtworkme.mybluemix.net/"});
 }
