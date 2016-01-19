@@ -54,7 +54,7 @@ function webListener(request, sender, sendResponse) {
   //Parse message string into JSON object
 
   if (request.message){
-    var message = JSON.parse(request.message);
+    var message = request.message;
 
     console.log("Stringified Message: " + JSON.stringify(message));
 
