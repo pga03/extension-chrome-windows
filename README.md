@@ -37,5 +37,10 @@ Chrome allows unpacked extensions to be installed by enabling development mode.
 
 ###Troubleshooting
 
+####Debugging
 Chrome lets you inspect background views using the Chrome developer tools. You can access a link
 to inspect the plugin from `chrome://extensions`
+
+####Extension ID
+When installed in development mode, the extension's ID can sometimes change. You can view your extension ID
+at `chrome://extensions` and use it in your first discovery server and native messaging hosts.
