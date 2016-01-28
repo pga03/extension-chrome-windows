@@ -37,5 +37,5 @@ function webListener(request, sender, sendResponse) {
     console.log("Exception occured!");
     sendResponse({"error": true, "msg": "An exception occured", err: ex});
   }
-  return true;
+  return true;  // see http://stackoverflow.com/questions/20077487/chrome-extension-message-passing-response-not-sent
 }
