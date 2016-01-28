@@ -1,35 +1,41 @@
-#First Discovery Chrome Extension (for Windows)
+#First Discovery Chrome Extension
 
-###Before We Begin:
-It's a good idea to read up on Chrome's messaging (native and non-native).
-https://developer.chrome.com/extensions/messaging
-https://developer.chrome.com/extensions/nativeMessaging
 
-###What does it do?
-It takes a message from a web page and sends it to a native host.
+####About
+This Chrome extension is responsible for passing messages from a First Discovery Tool web site to a Chrome native messaging
+host. This extension is simply a middle man between a web site and a native host to facilitate communication.
 
-The message originating in the web app gets passed to the extension. The
-extension then passes that message as a native message to the native host. The
-native host and extension can pass messages between themselves in both
-directions.
 
-The popup.html and popup.js files do a preliminary check to see if the native
-host is connectable. If it isn't, it redirects Chrome to the error.html page
+This repository is not useful by itself. It should be used with its companion native messaging host  and a first discovery server:
 
-###How do I install it?
-The installation for the extension is fairly straightforward. Simply turn on
-developer tools in chrome://extensions and load the unpacked app.
+1. https://github.com/pga03/first-discovery-native-host
+2. https://github.com/pga03/first-discovery-server
 
-**You also need to install the native host. See https://github.com/pga03/first-discovery-native-host**
 
-###Usage:
-Click the newly-created Fist Discovery icon in Chrome. This will open a new tab
-on the messaging site.
+####Messaging background
 
-Once on the pages, you can try sending messages.
+See these links for additional information on Chrome's messaging capabilities:
 
-###Additional Notes:
-* A webpage can't listen for messages, but it can be sent responses. This is good enough for our use case.
-* Windows/OS X/Linux have different installation methods. We'll need to keep
-this is mind further down the road
+1. https://developer.chrome.com/extensions/messaging
+2. https://developer.chrome.com/extensions/nativeMessaging
 
+
+###Installation
+
+Chrome allows unpacked extensions to be installed by enabling development mode. 
+
+1. Download this repository and unzip if necessary
+2. Add your URL to the `externally_connectable.matches` array in `manifest.json`
+3. Access `chrome://extensions` in Chrome
+4. Check the "develpment mode" check box
+5. Click "Load unpacked extension" button
+6. Select the repository folder
+
+###Uninstall
+1. Access `chrome://extensions` in Chrome
+2. Delete the extension
+
+###Troubleshooting
+
+Chrome lets you inspect background views using the Chrome developer tools. You can access a link
+to inspect the plugin from `chrome://extensions`
