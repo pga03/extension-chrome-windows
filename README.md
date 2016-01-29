@@ -44,3 +44,103 @@ to inspect the plugin from `chrome://extensions`
 ####Extension ID
 When installed in development mode, the extension's ID can sometimes change. You can view your extension ID
 at `chrome://extensions` and use it in your first discovery server and native messaging hosts.
+
+
+###Message Format
+Per the Chrome messaging documentation, the extension can be sent messages in this manner:
+
+`chrome.runtime.sendMessage(extension_id, msg_object, callback_function);`
+
+The general `msg_object` argument must be a JSON object with this structure
+
+  {
+    message: {
+      message_type: "string"     
+    }
+  }
+  
+Supported values for `message_type` are `write_usb` and `request_version`.
+
+####write_usb message
+This message requires additional information and is used to write the GPII user token
+and preference set to a USB device (that writing is performed by the native messaging host).
+
+Example of type `write_usb`:
+
+  {
+    message: {
+      message_type: "write_usb",
+      message_body: {
+        userToken: "the user's GPII user token",
+        preferences: {} # an object with the user's Needs & Preference set
+      }
+    }
+  }
+  
+The callback function is supplied with an object in this format:
+
+  {
+    is_successful: true/false  
+  }
+
+
+####request_version message
+This message requires no additional information. Its purpose is to allow the web page
+to inspect the environment for the existence of the extension, and always returns
+quickly without performing any real operation. 
+
+Example `msg_object`:
+
+  {
+    message: {
+      message_type: "request_version"     
+    }
+  }
+  
+The callback function is supplied with an object in this format:
+
+  {
+    extension: "extension version number",
+    native: "unknown" 
+  }
+
+
+
+####Example usage
+
+This example shows how to detect the extension and use it, or run some other code when it is not present.
+
+    // If the plugin hasn't responded in 2 seconds with the version, it is a user without a
+    // plugin installed
+    var successTimeoutId = setTimeout(function(){
+        function_to_execute_when_no_extension_is_present();
+    }, 2000);
+    
+    window.chrome.runtime.sendMessage(
+        that.options.chromeExtensionId,
+        {"message": {"message_type":"request_version"}},
+        function onVersionCallback(version){
+            // If we got a version, the plugin is installed, so clear the timeout and let the plugin write to usb
+            if (version){                   
+                clearTimeout(successTimeoutId);
+                var message = {
+                    message: {
+                        message_type: "write_usb",
+                        message_body: {
+                            userToken: data.userToken,
+                            preferences: data.preferences
+                        }
+                    }
+                };
+                window.chrome.runtime.sendMessage(
+                    that.options.chromeExtensionId,
+                    message,
+                    function onChromeExtensionResponse(response) {
+                        if (response.is_successful == "true") {
+                            that.events.onSuccess.fire(data);
+                        } else {
+                            that.events.onError.fire();
+                        }
+                    });
+            }
+        });
