@@ -53,11 +53,12 @@ Per the Chrome messaging documentation, the extension can be sent messages in th
 
 The general `msg_object` argument must be a JSON object with this structure
 
-  {
-    message: {
-      message_type: "string"     
+    {
+        message: {
+          message_type: "string",
+          message_body: {}
+        }
     }
-  }
   
 Supported values for `message_type` are `write_usb` and `request_version`.
 
@@ -67,21 +68,21 @@ and preference set to a USB device (that writing is performed by the native mess
 
 Example of type `write_usb`:
 
-  {
-    message: {
-      message_type: "write_usb",
-      message_body: {
-        userToken: "the user's GPII user token",
-        preferences: {} # an object with the user's Needs & Preference set
-      }
+    {
+        message: {
+          message_type: "write_usb",
+          message_body: {
+            userToken: "the user's GPII user token",
+            preferences: {} # an object with the user's Needs & Preference set
+          }
+        }
     }
-  }
   
 The callback function is supplied with an object in this format:
 
-  {
-    is_successful: true/false  
-  }
+    {
+        is_successful: true/false  
+    }
 
 
 ####request_version message
@@ -91,18 +92,18 @@ quickly without performing any real operation.
 
 Example `msg_object`:
 
-  {
-    message: {
-      message_type: "request_version"     
+    {
+        message: {
+          message_type: "request_version"     
+        }
     }
-  }
   
 The callback function is supplied with an object in this format:
 
-  {
-    extension: "extension version number",
-    native: "unknown" 
-  }
+    {
+        extension: "extension version number",
+        native: "unknown" 
+    }
 
 
 
