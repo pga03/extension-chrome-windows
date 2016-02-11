@@ -18,8 +18,13 @@
     "nativeMessaging"
   ],
   "externally_connectable":{
-    "matches": ["http://extension-demo-jtworkme.mybluemix.net/*",
-                "https://first-discovery-demo.mybluemix.net/demos/prefsServerIntegration/*"]
+    "matches": [
+      "http://extension-demo-jtworkme.mybluemix.net/*",
+      "http://first-discovery-demo.mybluemix.net/demos/prefsServerIntegration/*",
+      "http://first-discovery.mybluemix.net/*",
+      "http://first-discovery2.mybluemix.net/*",
+      "http://first-discovery3.mybluemix.net/*"
+    ]
   },
   "background": {
     "page": "background.html"

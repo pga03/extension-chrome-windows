@@ -2,4 +2,4 @@
   policy prohibits inline scripts in extensions*/
 
 //TODO: fix connection checking for popup.js
-chrome.tabs.create({url : "http://extension-demo-jtworkme.mybluemix.net/"});
+//chrome.tabs.create({url : "http://extension-demo-jtworkme.mybluemix.net/"});
