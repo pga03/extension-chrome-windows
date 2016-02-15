@@ -17,13 +17,22 @@ This repository is not useful by itself. It should be used with its companion na
 See these links for additional information on Chrome's messaging capabilities:
 
 1. https://developer.chrome.com/extensions/messaging
-2. https://developer.chrome.com/extensions/nativeMessaging
+2. https://developer.chrome.com/extenions/nativeMessaging
 
 
 ###Installation
 
 1. Simply navigate to https://chrome.google.com/webstore/detail/comibmfirstdiscovery/nkojgcmaioingjndknblmghefcfijobm and install from the webstore
 
+**NOTE:** The extension is configured to only connect to these URL's: 
+
+      http://extension-demo-jtworkme.mybluemix.net/*,
+      http://first-discovery-demo.mybluemix.net/demos/prefsServerIntegration/*,
+      http://first-discovery.mybluemix.net/*,
+      http://first-discovery2.mybluemix.net/*,
+      http://first-discovery3.mybluemix.net/*
+
+As a result, the extension will not cooperate with a web app hosted at any other URL pattern.
 
 ###Uninstall
 1. Access `chrome://extensions` in Chrome
