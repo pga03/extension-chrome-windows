@@ -22,14 +22,8 @@ See these links for additional information on Chrome's messaging capabilities:
 
 ###Installation
 
-Chrome allows unpacked extensions to be installed by enabling development mode. 
+1. Simply navigate to https://chrome.google.com/webstore/detail/comibmfirstdiscovery/nkojgcmaioingjndknblmghefcfijobm and install from the webstore
 
-1. Download this repository and unzip if necessary
-2. Add your URL to the `externally_connectable.matches` array in `manifest.json`
-3. Access `chrome://extensions` in Chrome
-4. Check the "develpment mode" check box
-5. Click "Load unpacked extension" button
-6. Select the repository folder
 
 ###Uninstall
 1. Access `chrome://extensions` in Chrome
