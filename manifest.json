@@ -1,6 +1,7 @@
 {
   "manifest_version": 2,
   "name": "com.ibm.firstdiscovery",
+  "short_name": "First Discovery Extension",
   "description": "Extension that facilitates communication between First Discovery Tool and Native host",
   "version": "1.1",
   "browser_action": {
