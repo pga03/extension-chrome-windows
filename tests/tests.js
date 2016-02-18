@@ -58,6 +58,13 @@ var sender = {
         windowId: 1
     }
 };
+describe('Native host', function () {
+
+    var window;
+
+
+});
+
 
 describe('background page', function () {
 
@@ -81,7 +88,6 @@ describe('background page', function () {
                 chrome.runtime.sendMessage(extensionId, 
                         {"message": {"message_type": "request_version"}},
                         function (response) {
-                            console.log("FUCK FUCK SHIT");
                             if (response) {
                                 hasExtension = true;
                                 console.log("got reply");
@@ -91,7 +97,6 @@ describe('background page', function () {
           	    chrome.runtime.sendMessage(extensionId,
           	        {"message": {"message_type": "request_version"}},
           	        function (response) {
-                        console.log("FUCK FUCK SHIT");
           	            console.log("A response was received");
           	            console.dir(response);
           	        });
@@ -130,7 +135,6 @@ describe('background page', function () {
                 // If we got a version, the plugin is installed, so clear the timeout and let the plugin write to usb
                     if (version){                   
                         hasExtension = true;
-                        console.log("I want to die");
                     }
                 });
         });
