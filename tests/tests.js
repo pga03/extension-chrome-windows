@@ -78,7 +78,6 @@ chromemock.runtime.sendNativeMessage = function (hostname, requestMessage, callb
     // callback
 };
 
-
 (function (chrome) {
     var hostName = "com.ibm.firstdiscovery";
     var extensionVersion = "1";
