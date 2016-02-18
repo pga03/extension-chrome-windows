@@ -151,4 +151,4 @@ This example shows how to detect the extension and use it, or run some other cod
 
 
 ####Testing
-Navigate to `tests` and run `npm install`
+Navigate to `tests` and run `node tests.js`

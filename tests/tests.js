@@ -1,20 +1,14 @@
-var chrome = require('sinon-chrome');
-var fs = require('fs');
-var sinon = require('sinon');
-var assert = require('chai').assert;
-var jsdom = require('jsdom');
+var extensionVersion = 1;
 
-sinon.assert.expose(assert, {prefix: ''});
+var versionCheck = false;
+var usbCheck = false;
+var junkCheck = false;
 
-var requiredVersion = 1;
-var hasExtension = false;
-var extensionId = "nkojgcmaioingjndknblmghefcfijobm";
-
-var request = {
+var usbMessage = {
     "message":{
         "message_type":"write_usb",
         "message_body":{
-            "userToken":"TestTestTestTestTestTestTestTest",
+            "userToken":"Test",
             "preferences":{
                 "contexts":{
                     "gpii-default":{
@@ -37,121 +31,103 @@ var request = {
     }
 };
 
-var sender = {
-    "url" : "http://www.testingtesting.com",
-    "frameId": 0,
-    "tab" : {
-        active: true,
-        audible: false,
-        height: 609,
-        highlighted: true,
-        id: 49,
-        incognito: false,
-        index: 12,
-        muted: false,
-        pinned: false,
-        selected: true,
-        status: "complete",
-        title: "test site",
-        url: "http://www.testingtesting.com",
-        width: 1190,
-        windowId: 1
+var sendResponseCallback = function (response) {
+    if (response.extension === '1' && response.native === 'unknown'){
+        console.log("SUCCESS: version request message");
+        versionCheck = true;
     }
+
 };
 
-describe('background page', function () {
 
-    var window;
+var chromemock = {};
+chromemock.runtime = {};
+chromemock.runtime.onMessageExternal = {};
 
-    beforeEach(function (done) {
-        jsdom.env({
-            // generated background page
-            html: '<html></html>',
-            // js source
-            src: [fs.readFileSync('../background.js', 'utf-8')],
-            created: function (errors, wnd) {
-                // attach `chrome` to window
-                wnd.chrome = chrome;
-                wnd.console = console;
-                // chrome.runtime.sendMessage(extensionId, request, function (response) {
-                // console.log("A response was received");
-                // console.dir(response);
+chromemock.runtime.onMessageExternal.addListener = function (listener) {
+    //Version Checking
+    listener(
+        {message: {"message_type": "request_version", "message_body": "fake message"}},
+        {},
+        sendResponseCallback);
 
-                // });
-                chrome.runtime.sendMessage(extensionId, 
-                        {"message": {"message_type": "request_version"}},
-                        function (response) {
-                            console.log("FUCK FUCK SHIT");
-                            if (response) {
-                                hasExtension = true;
-                                console.log("got reply");
-                                console.dir(response);
+    //USB writing checking
+    listener(
+        usbMessage,
+        {},
+        sendResponseCallback);
+
+    //USB writing checking
+    listener(
+        {message: {"junk1": "junk", "junk2": {"junk3": "junk"}}},
+        {},
+        sendResponseCallback);
+};
+
+chromemock.runtime.sendNativeMessage = function (hostname, requestMessage, callback) {
+    // validate format of the request message
+    if (requestMessage.message_type === "write_usb"){
+        usbCheck = true;
+        console.log("SUCCESS: USB write request message");
+    }
+
+    // validate hostname
+    if (hostname === "com.ibm.firstdiscovery"){
+        console.log("SUCCESS: hostname is good");
+    }
+    // callback
+};
+
+
+(function (chrome) {
+    var hostName = "com.ibm.firstdiscovery";
+    var extensionVersion = "1";
+
+    // Listen to events from our web app and handle them.
+    chrome.runtime.onMessageExternal.addListener(webListener);
+
+    function webListener(request, sender, sendResponse) {
+        try {
+            if (request && request.message) {
+                //console.log("request.message: " + JSON.stringify(request.message));
+
+                if (request.message.message_type === "write_usb") {
+                    console.log("Got call to write to USB");
+                    chrome.runtime.sendNativeMessage(hostName, request.message,
+
+                        function onNativeMessageResponse(response) {
+                            console.log("Response from Native: " + JSON.stringify(response));
+                            if (response.is_successful === "true") {
+                                console.log("Successful message from native host");
+                            } else {
+                                console.log("Unsuccessful message from native host");
                             }
-                        });
-          	    chrome.runtime.sendMessage(extensionId,
-          	        {"message": {"message_type": "request_version"}},
-          	        function (response) {
-                        console.log("FUCK FUCK SHIT");
-          	            console.log("A response was received");
-          	            console.dir(response);
-          	        });
-            },
-            done: function (errors, wnd) {
-                if (errors) {
-                    console.log(errors);
-                    done(true);
-                } else {
-                    window = wnd;
-                    done();
+                            sendResponse(response);
+
+                    });
+                }
+
+                else if (request.message.message_type === "request_version") {
+                    sendResponse({"extension": extensionVersion, "native": "unknown"});
+                }
+                else {
+                    console.log("Unknown message type");
+                    junkCheck = true;
+                    sendResponse({"error": true, "msg": "Unknown message type"});
+                    console.log("SUCCESS: Extension handed junk message properly");
                 }
             }
-        });
-    });
-
-    // afterEach(function () {
-    //     chrome.reset();
-    //     window.close();
-    // });
-
-    it('Should attach listeners on startup', function () {
-        assert.calledOnce(chrome.runtime.onMessageExternal.addListener);
-    });
-
-    it('Should send native message after getting external message', function () {
-        // var sendResponse = sinon.spy();
-        // chrome.runtime.onMessageExternal.addListener(sendResponse);
-        // chrome.runtime.onMessageExternal.trigger(extensionId, {"message": {"message_type": "request_version"}}, sendResponse);
-        // assert.calledOnce(sendResponse);
-
-        chrome.runtime.sendMessage(
-            extensionId,
-            {"message": {"message_type":"request_version"}},
-                function onVersionCallback(version){
-                // If we got a version, the plugin is installed, so clear the timeout and let the plugin write to usb
-                    if (version){                   
-                        hasExtension = true;
-                        console.log("I want to die");
-                    }
-                });
-        });
+        } catch (ex) {
+            console.log("Exception occured!");
+            sendResponse({"error": true, "msg": "An exception occured", err: ex});
+        }
+        return true;  // see http://stackoverflow.com/questions/20077487/chrome-extension-message-passing-response-not-sent
+    }
+}(chromemock));
 
 
-    it('should return tabs by request from popup', function () {
-        chrome.tabs.query.reset();
-        var sendResponse = sinon.spy();
-        chrome.runtime.onMessageExternal.trigger('get-tabs', {}, sendResponse);
-        assert.calledOnce(sendResponse);
-        assert.calledWith(sendResponse, sinon.match.array);
-        assert.calledWith(sendResponse, sinon.match(function (value) {
-            return value.length === 4;
-        }));
-    });
-});
-
-console.log("Hello");
-
-chrome.runtime.sendMessage(extensionId, request.message,
-        function (response) {
-            console.log("A response was received");
-            console.dir(response);
-        });
+if(versionCheck === true && usbCheck === true && junkCheck === true){
+    console.log("\nALL TESTS PASSED!");
+} else{
+    console.log("\nFAILURE: not all tests passed!");
+}
