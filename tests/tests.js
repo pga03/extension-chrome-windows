@@ -62,6 +62,48 @@ describe('Native host', function () {
 
     var window;
 
+    beforeEach(function (done) {
+        jsdom.env({
+            // generated background page
+            html: '<html></html>',
+            // js source
+            src: [fs.readFileSync('../background.js', 'utf-8')],
+            created: function (errors, wnd) {
+                // attach `chrome` to window
+                wnd.chrome = chrome;
+                wnd.console = console;
+                // chrome.runtime.sendMessage(extensionId, request, function (response) {
+                // console.log("A response was received");
+                // console.dir(response);
+
+                // });
+                chrome.runtime.sendMessage(extensionId, 
+                        {"message": {"message_type": "request_version"}},
+                        function (response) {
+                            if (response) {
+                                hasExtension = true;
+                                console.log("got reply");
+                                console.dir(response);
+                            }
+                        });
+          	    chrome.runtime.sendMessage(extensionId,
+          	        {"message": {"message_type": "request_version"}},
+          	        function (response) {
+          	            console.log("A response was received");
+          	            console.dir(response);
+          	        });
+            },
+            done: function (errors, wnd) {
+                if (errors) {
+                    console.log(errors);
+                    done(true);
+                } else {
+                    window = wnd;
+                    done();
+                }
+            }
+        });
+    });
 
 });
 
